@@ -67,6 +67,24 @@ namespace cvt
         T c;
         T s;
     };
+    
+    template <typename T>
+    struct PseudoHuber : public RobustEstimator<T>
+    {
+        PseudoHuber() : c( ( T )1.345 ), s( 1.0f ) {}
+
+        T weight( T r ) const
+        {
+            return ( T )1.0 / ( Math::sqrt( 1 + Math::sqr( r / ( s * c ) ) ) );
+        }
+
+        /* threshold is the slope here */
+        void setThreshold( T thresh ){ c = thresh; }
+        void setScale( T scale ){ s = scale; }
+
+        T c;
+        T s;
+    };
 
     template <typename T>
     struct Tukey : public RobustEstimator<T>
@@ -113,6 +131,7 @@ namespace cvt
     };
 
     typedef Huber<float> Huberf;
+    typedef PseudoHuber<float> PseudoHuberf;
     typedef Tukey<float> Tukeyf;
     typedef BlakeZisserman<float> BlakeZissermanf;
     typedef NoWeighting<float> NoWeightingf;
