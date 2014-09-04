@@ -149,6 +149,10 @@ namespace cvt {
 
             void canny( Image& dst, float low, float hight ) const;
 
+            void minmax( float& min, float& max, float mininit = INFINITY, float maxinit = -INFINITY ) const;
+
+			Image& assign( const Image& c, IAllocatorType memtype = IALLOCATOR_MEM );
+
 			Image& operator=( const Color& c );
 			Image& operator=( const Image& c );
 
@@ -240,6 +244,16 @@ namespace cvt {
 			_mem->copy( img._mem );
 		return *this;
 	}
+
+	inline Image& Image::assign( const Image& img, IAllocatorType memtype )
+    {
+        if( this == &img )
+			throw CVTException("Can't self assign image!");
+
+        reallocate( img, memtype );
+        _mem->copy( img._mem );
+		return *this;
+    }
 
 	inline size_t Image::channels() const
 	{
