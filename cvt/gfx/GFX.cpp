@@ -28,16 +28,16 @@
 
 namespace cvt {
 
-	GFX::GFX() : _engine( NULL )
+	GFX::GFX() : _engine( NULL ), _status( 0 ), _translationGlobal( 0, 0 )
 	{
 		setDefault();
 	}
 
-	GFX::GFX( const GFX& g ) :  _engine( NULL ), _color( g._color ), _linewidth( g._linewidth ), _translation( g._translation), _translationGlobal( 0, 0 )
+	GFX::GFX( const GFX& g ) :  _engine( NULL ), _status( 0 ), _color( g._color ), _linewidth( g._linewidth ), _translation( g._translation), _translationGlobal( 0, 0 )
 	{
 	}
 
-	GFX::GFX( GFXEngine* engine ) : _engine( engine ), _translationGlobal( 0, 0 )
+	GFX::GFX( GFXEngine* engine ) : _engine( engine ), _status( 0 ), _translationGlobal( 0, 0 )
 	{
 		setDefault();
 		begin();
@@ -51,19 +51,19 @@ namespace cvt {
             delete _engine;
     }
 
-	GFX::GFX( Drawable* drawable )
+	GFX::GFX( Drawable* drawable ) : _engine( NULL ), _status( 0 ), _translationGlobal( 0, 0 )
 	{
-		setDefault();
 		_engine = drawable->gfxEngine();
         _status |= GFX_DELETE_ENGINE;
+		setDefault();
 		begin();
 	}
 
-	GFX::GFX( Drawable& drawable )
+	GFX::GFX( Drawable& drawable ) : _engine( NULL ), _status( 0 ), _translationGlobal( 0, 0 )
 	{
-		setDefault();
 		_engine = drawable.gfxEngine();
         _status |= GFX_DELETE_ENGINE;
+		setDefault();
 		begin();
 	}
 
