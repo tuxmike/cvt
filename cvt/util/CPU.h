@@ -133,7 +133,7 @@ namespace cvt {
 
     static inline bool isBigEndian()
     {
-        return ! isLittleEndian();
+        return !isLittleEndian();
     }
 }
 
