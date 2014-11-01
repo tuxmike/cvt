@@ -131,6 +131,11 @@ namespace cvt {
 
             virtual void MulU8Value1f( float* dst, const uint8_t* src, float value, size_t n ) const;
 
+            /* binary swap routines / endian conversion */
+            virtual void BSwap16( uint16_t* dst, const uint16_t* src, size_t size ) const;
+            virtual void BSwap32( uint32_t* dst, const uint32_t* src, size_t size ) const;
+            virtual void BSwap64( uint64_t* dst, const uint64_t* src, size_t size ) const;
+
             /* memory block reductions */
             /**
              * @brief SSD   sum of squared differences

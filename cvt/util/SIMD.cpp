@@ -1148,6 +1148,47 @@ namespace cvt {
             *dst++ = *src++ * value;
 	}
 
+    void SIMD::BSwap16( uint16_t* dst, const uint16_t* src, size_t size ) const
+    {
+        uint16_t tmp;
+
+        while( size-- ) {
+            tmp = *src++;
+            *dst++ = ( ( tmp << 8) & 0xff00 ) | ( ( tmp >> 8 ) & 0x00ff );
+        }
+    }
+
+    void SIMD::BSwap32( uint32_t* dst, const uint32_t* src, size_t size ) const
+    {
+        uint32_t tmp;
+
+        while( size-- ) {
+            tmp = *src++;
+            *dst++ =  ( ( tmp << 24 ) & 0xff000000 ) |
+                      ( ( tmp <<  8 ) & 0x00ff0000 ) |
+                      ( ( tmp >>  8 ) & 0x0000ff00 ) |
+                      ( ( tmp >> 24 ) & 0x000000ff );
+        }
+    }
+
+    void SIMD::BSwap64( uint64_t* dst, const uint64_t* src, size_t size ) const
+    {
+        uint64_t tmp;
+
+        while( size-- ) {
+            tmp = *src++;
+            *dst++ = ( ( tmp << 56 ) & 0xff00000000000000UL ) |
+                     ( ( tmp << 40 ) & 0x00ff000000000000UL ) |
+                     ( ( tmp << 24 ) & 0x0000ff0000000000UL ) |
+                     ( ( tmp <<  8 ) & 0x000000ff00000000UL ) |
+                     ( ( tmp >>  8 ) & 0x00000000ff000000UL ) |
+                     ( ( tmp >> 24 ) & 0x0000000000ff0000UL ) |
+                     ( ( tmp >> 40 ) & 0x000000000000ff00UL ) |
+                     ( ( tmp >> 56 ) & 0x00000000000000ffUL );
+        }
+    }
+
+
     float SIMD::SSD( const float* src1, const float* src2, const size_t n ) const
     {
         size_t i = n >> 2;

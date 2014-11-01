@@ -95,14 +95,14 @@ namespace cvt {
 
 		size_t n16 = n >> 4;
 		size_t r   = n & 0xf;
-			
+
         sum1 = sumUp1 = zero;
         sum2 = sumUp2 = zero;
 
         // calculate the number of 31 blocks we need to process
         // n = 16 * 31 * x + r -> x / 496 + 1
         size_t numBlocks = n / ( 16 * 63 ) + 1;
-             
+
 
 		size_t num;
         while( numBlocks-- ){
@@ -127,28 +127,28 @@ namespace cvt {
                 n16--;
                 num--;
             }
-            
+
 			// each 31 loops, accumulate the result into bitcount to
             // avoid overflow
             sumUp1 = _mm_add_epi64( sumUp1, _mm_sad_epu8( sum1, zero ) );
             sumUp2 = _mm_add_epi64( sumUp2, _mm_sad_epu8( sum2, zero ) );
-            
+
             /*
             sum = _mm_sad_epu8( sum1, zero );
-            sum = _mm_add_epi64( sum, _mm_sad_epu8( sum2, zero ) );            
+            sum = _mm_add_epi64( sum, _mm_sad_epu8( sum2, zero ) );
             sum = _mm_add_epi64( _mm_srli_si128( sum, 8 ), sum );
             bitcount += ( ( uint64_t* )( &sum ) )[ 0 ];
             */
             sum1 = sum2 = zero;
         }
-        
+
 		sum = _mm_add_epi64( sumUp1, sumUp2 );
 		sum = _mm_add_epi64( _mm_srli_si128( sum, 8 ), sum );
 
 		uint64_t tmp;
 		_mm_storel_epi64( ( __m128i* ) &tmp, sum );
         bitcount += tmp;
-        
+
         if( r ){
             uint64_t a = 0, b = 0;
             uint64_t xored;
@@ -169,6 +169,112 @@ namespace cvt {
 
 		return bitcount;
 	}
+
+
+    void SIMDSSSE3::BSwap16( uint16_t* dst, const uint16_t* src, size_t size ) const
+    {
+		__m128i x;
+        __m128i mask = _mm_set_epi8( 14, 15, 12, 13, 10, 11, 8, 9, 6, 7, 4, 5, 2, 3, 0, 1 );
+
+        size_t i = size >> 3;
+		if( ( ( size_t ) dst | ( size_t ) src ) & 0xF ) {
+			while( i-- ) {
+				x = _mm_loadu_si128( ( __m128i* ) src );
+				x = _mm_shuffle_epi8( x, mask );
+				_mm_storeu_si128( ( __m128i* ) dst, x );
+				src += 8;
+				dst += 8;
+			}
+		} else {
+			while( i-- ) {
+				x = _mm_load_si128( ( __m128i* ) src );
+				x = _mm_shuffle_epi8( x, mask );
+				_mm_stream_si128( ( __m128i* ) dst, x );
+				src += 8;
+				dst += 8;
+			}
+		}
+
+
+        i = size & 0x07;
+        while( i-- ) {
+            uint16_t tmp = *src++;
+            *dst++ = ( ( tmp << 8) & 0xff00 ) | ( ( tmp >> 8 ) & 0x00ff );
+        }
+    }
+
+    void SIMDSSSE3::BSwap32( uint32_t* dst, const uint32_t* src, size_t size ) const
+    {
+		__m128i x;
+        __m128i mask = _mm_set_epi8( 12, 13, 14, 15, 8, 9, 10, 11, 4, 5, 6, 7, 0, 1, 2, 3 );
+
+        size_t i = size >> 2;
+		if( ( ( size_t ) dst | ( size_t ) src ) & 0xF ) {
+			while( i-- ) {
+				x = _mm_loadu_si128( ( __m128i* ) src );
+				x = _mm_shuffle_epi8( x, mask );
+				_mm_storeu_si128( ( __m128i* ) dst, x );
+				src += 4;
+				dst += 4;
+			}
+		} else {
+			while( i-- ) {
+				x = _mm_load_si128( ( __m128i* ) src );
+				x = _mm_shuffle_epi8( x, mask );
+				_mm_stream_si128( ( __m128i* ) dst, x );
+				src += 4;
+				dst += 4;
+			}
+		}
+
+
+        i = size & 0x03;
+        while( i-- ) {
+            uint32_t tmp = *src++;
+            *dst++ =  ( ( tmp << 24 ) & 0xff000000 ) |
+                      ( ( tmp <<  8 ) & 0x00ff0000 ) |
+                      ( ( tmp >>  8 ) & 0x0000ff00 ) |
+                      ( ( tmp >> 24 ) & 0x000000ff );
+        }
+    }
+
+    void SIMDSSSE3::BSwap64( uint64_t* dst, const uint64_t* src, size_t size ) const
+    {
+		__m128i x;
+        __m128i mask = _mm_set_epi8( 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7 );
+
+        size_t i = size >> 1;
+		if( ( ( size_t ) dst | ( size_t ) src ) & 0xF ) {
+			while( i-- ) {
+				x = _mm_loadu_si128( ( __m128i* ) src );
+				x = _mm_shuffle_epi8( x, mask );
+				_mm_storeu_si128( ( __m128i* ) dst, x );
+				src += 2;
+				dst += 2;
+			}
+		} else {
+			while( i-- ) {
+				x = _mm_load_si128( ( __m128i* ) src );
+				x = _mm_shuffle_epi8( x, mask );
+				_mm_stream_si128( ( __m128i* ) dst, x );
+				src += 2;
+				dst += 2;
+			}
+		}
+
+
+        if( size & 0x01 ) {
+             uint64_t tmp = *src++;
+            *dst++ = ( ( tmp << 56 ) & 0xff00000000000000UL ) |
+                     ( ( tmp << 40 ) & 0x00ff000000000000UL ) |
+                     ( ( tmp << 24 ) & 0x0000ff0000000000UL ) |
+                     ( ( tmp <<  8 ) & 0x000000ff00000000UL ) |
+                     ( ( tmp >>  8 ) & 0x00000000ff000000UL ) |
+                     ( ( tmp >> 24 ) & 0x0000000000ff0000UL ) |
+                     ( ( tmp >> 40 ) & 0x000000000000ff00UL ) |
+                     ( ( tmp >> 56 ) & 0x00000000000000ffUL );
+        }
+    }
 
 }
 

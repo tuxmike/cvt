@@ -47,6 +47,11 @@ namespace cvt {
 		virtual void Conv_XYZAu8_to_ZYXAu8( uint8_t* dst, uint8_t const* src, const size_t n ) const;
 		virtual size_t hammingDistance(const uint8_t* src1, const uint8_t* src2, size_t n) const;
 
+        /* binary swap routines / endian conversion */
+        virtual void BSwap16( uint16_t* dst, const uint16_t* src, size_t size ) const;
+        virtual void BSwap32( uint32_t* dst, const uint32_t* src, size_t size ) const;
+        virtual void BSwap64( uint64_t* dst, const uint64_t* src, size_t size ) const;
+
         virtual std::string name() const;
 
         virtual SIMDType type() const;
