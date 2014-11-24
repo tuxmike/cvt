@@ -86,7 +86,7 @@ namespace cvt {
 				public:
 					bool operator()( const Feature& f1, const Feature& f2 )
 					{
-						return f1.score < f2.score;
+						return f1.score > f2.score;
 					}
 			};
 
