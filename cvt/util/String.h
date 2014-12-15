@@ -159,9 +159,13 @@ namespace cvt {
 		//SIMD::instance()->Memcpy( ( uint8_t* ) _str, ( uint8_t* ) str._str, _len + 1 );
 	}
 
-	inline String::String( const std::string& str ) :
-		String::String( str.c_str() )
-	{}
+	inline String::String( const std::string& str )
+	{
+		_len  = str.length();
+		_blen = Math::pad16( _len + 1 );
+		_str = new char[ _blen ];
+		memcpy( ( uint8_t* ) _str, ( uint8_t* ) str.c_str(), _len + 1 );
+	}
 
 	inline String::String( const String& str, int start, int len )
 	{
