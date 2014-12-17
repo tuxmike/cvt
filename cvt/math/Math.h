@@ -378,6 +378,10 @@ namespace cvt {
             return ::powf( x, y );
         }
 
+        static inline void srand( unsigned int seed )
+        {
+            ::srandom( seed );
+        }
 
         static inline ssize_t rand()
         {
