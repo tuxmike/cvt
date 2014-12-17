@@ -26,6 +26,7 @@
 #define CVT_STRING_H
 
 #include <iostream>
+#include <string>
 #include <vector>
 #include <stdio.h>
 #include <stdlib.h>
@@ -48,6 +49,7 @@ namespace cvt {
 			String();
 			String( const char* str );
 			String( const String& str );
+			explicit String( const std::string& str );
 			explicit String( const char* str, size_t size );
 			explicit String( const String& str, int start, int len );
 			~String();
@@ -106,6 +108,7 @@ namespace cvt {
 			T		 to() const;
 
 			const char* c_str() const;
+			const std::string std_str() const;
 		private:
 			size_t _cstrlen( const char* str ) const;
 			void   _grow( size_t newsize );
@@ -154,6 +157,14 @@ namespace cvt {
 		_str = new char[ _blen ];
 		memcpy( ( uint8_t* ) _str, ( uint8_t* ) str._str, _len + 1 );
 		//SIMD::instance()->Memcpy( ( uint8_t* ) _str, ( uint8_t* ) str._str, _len + 1 );
+	}
+
+	inline String::String( const std::string& str )
+	{
+		_len  = str.length();
+		_blen = Math::pad16( _len + 1 );
+		_str = new char[ _blen ];
+		memcpy( ( uint8_t* ) _str, ( uint8_t* ) str.c_str(), _len + 1 );
 	}
 
 	inline String::String( const String& str, int start, int len )
@@ -205,6 +216,11 @@ namespace cvt {
 	inline const char* String::c_str() const
 	{
 		return _str;
+	}
+
+	inline const std::string String::std_str() const
+	{
+		return std::string( _str );
 	}
 
 	inline void String::assign( const char* str, size_t len )
