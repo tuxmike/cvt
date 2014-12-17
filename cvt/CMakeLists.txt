@@ -412,6 +412,7 @@ SET( CVT_HEADERS
    util/CVTTest.h
    util/Condition.h
    util/ConfigFile.h
+   util/Debug.h
    util/Delegate.h
    util/Delegate.inl
    util/Data.h
