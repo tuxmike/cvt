@@ -30,15 +30,15 @@
 
 namespace cvt {
 
-    void FeatureSet::filterNMS( int radius, bool sort )
+    void FeatureSet::filterNMS( int radius, bool sort, bool suppressSameScores )
 	{
 		if( sort) {
-			CmpPos cmp;
+			CmpPosi cmp;
 			std::sort( _features.begin(), _features.end(), cmp );
 		}
 
 		NMSFilter nms( _features );
-		nms.filter( radius );
+		nms.filter( radius, suppressSameScores );
 	}
 
 	void FeatureSet::filterANMS( int radius, float threshold, bool sort )

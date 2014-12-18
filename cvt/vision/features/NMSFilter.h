@@ -36,7 +36,7 @@ namespace cvt {
 			NMSFilter( std::vector<Feature>& features );
 			~NMSFilter();
 
-			void filter( int radius );
+			void filter( int radius, bool suppressSameScores = false );
 		private:
 			struct ScanlineIndex {
 				int offset;
@@ -105,7 +105,7 @@ namespace cvt {
 
 	}
 
-	void NMSFilter::filter( int radius )
+	void NMSFilter::filter( int radius, bool suppressSameScores)
 	{
 		std::vector<Feature> filtered;
 		FeatureSet::CmpXi cmp;
@@ -127,6 +127,8 @@ namespace cvt {
 						   Math::abs( ( int ) _features[ i ].pt.x - ( int ) _features[ x ].pt.x ) <= radius )
 					{
 						if( _features[ x ].score > _features[ i ].score )
+							goto suppressed;
+						if( suppressSameScores && _features[ x ].score == _features[ i ].score && i < x)
 							goto suppressed;
 						x++;
 					}

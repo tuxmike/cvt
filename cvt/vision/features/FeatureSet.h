@@ -51,7 +51,7 @@ namespace cvt {
 			void			toPointSet2f( PointSet2f& ptset ) const;
 			void			setFeatures( const Feature* f, size_t n );
 
-			void			filterNMS( int radius, bool sortPosition );
+			void			filterNMS( int radius, bool sortPosition, bool suppressSameScores = false );
 			void			filterANMS( int radius, float threshold, bool sortPosition );
 			void			filterBest( size_t n, bool sortScore );
 
