@@ -35,7 +35,6 @@
 	{
 		_widgetimpl = wimpl;
 		[self setAutoresizingMask: NSViewHeightSizable | NSViewWidthSizable ];
-		[self allocateGState];
 		_glcontext = [ [ NSOpenGLContext alloc ] initWithCGLContextObj: ctx ];
 	}
 	return self;
