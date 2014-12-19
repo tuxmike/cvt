@@ -182,9 +182,10 @@ namespace cvt
 
 
 		if( str.length() == 1 ) {
-			if( ( str[ 0 ] >= KEY_Space && str[ 0 ] <= KEY_Asciitilde ) ||
-				( str[ 0 ] >= KEY_Nobreakspace && str[ 0 ] <= KEY_ydiaeresis ) )
-				return ( KeyCode ) str[ 0 ];
+            unsigned char key = str[ 0 ];
+            if( ( key >= KEY_Space && key <= KEY_Asciitilde ) ||
+                ( key >= KEY_Nobreakspace && key <= KEY_ydiaeresis ) )
+                return ( KeyCode ) key;
 		}
 		uint16_t code = [ e keyCode ];
 		if( code <= 0x7e )
