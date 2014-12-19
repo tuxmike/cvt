@@ -36,7 +36,7 @@ namespace cvt {
 	NSOpenGLContext*		 _glcontext;
 	cvt::WidgetImplWinGLOSX* _widgetimpl;
 }
-- (id) initWithFrame: (NSRect) frameRect CGLContextObj: ( void* ) ctx WidgetImpl: ( cvt::WidgetImplWinGLOSX* ) wimpl;
+- (id) initWithFrame: (NSRect) frameRect CGLContextObj: ( struct _CGLContextObject* ) ctx WidgetImpl: ( cvt::WidgetImplWinGLOSX* ) wimpl;
 - ( void ) moveEvent: (NSNotification*)notification;
 @end
 #endif

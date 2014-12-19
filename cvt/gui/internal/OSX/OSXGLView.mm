@@ -29,7 +29,7 @@
 
 @implementation OSXGLView
 
-- ( id ) initWithFrame: ( NSRect ) frame CGLContextObj: ( void* )ctx WidgetImpl: ( cvt::WidgetImplWinGLOSX* ) wimpl
+- ( id ) initWithFrame: ( NSRect ) frame CGLContextObj: ( struct _CGLContextObject* )ctx WidgetImpl: ( cvt::WidgetImplWinGLOSX* ) wimpl
 {
 	if ((self = [super initWithFrame:frame]) != nil)
 	{
