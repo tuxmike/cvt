@@ -59,7 +59,8 @@ namespace cvt
         IFORMAT_BAYER_GRBG_UINT8,
         IFORMAT_BAYER_GBRG_UINT8,
 		IFORMAT_YUYV_UINT8,
-		IFORMAT_UYVY_UINT8
+		IFORMAT_UYVY_UINT8,
+		IFORMAT_HSVA_UINT8
 	};
 
 	enum IFormatType
@@ -104,6 +105,7 @@ namespace cvt
         static const IFormat BAYER_GBRG_UINT8;
 		static const IFormat YUYV_UINT8;
 		static const IFormat UYVY_UINT8;
+		static const IFormat HSVA_UINT8;
 
 		static const IFormat& uint8Equivalent( const IFormat& format );
 		static const IFormat& uint16Equivalent( const IFormat& format );
@@ -162,6 +164,8 @@ namespace cvt
 				return IFormat::YUYV_UINT8;
 			case IFORMAT_UYVY_UINT8:
 				return IFormat::UYVY_UINT8;
+			case IFORMAT_HSVA_UINT8:
+			    return IFormat::HSVA_UINT8;
 			default:
 				throw CVTException( "NO UINT8 equivalent for requested FORMAT" );
 		}
@@ -422,6 +426,8 @@ namespace cvt
                 return IFormat::UYVY_UINT8;
             case IFORMAT_YUYV_UINT8:
                 return IFormat::YUYV_UINT8;
+            case IFORMAT_HSVA_UINT8:
+                return IFormat::HSVA_UINT8;
             case IFORMAT_BAYER_RGGB_UINT8:
                 return IFormat::BAYER_RGGB_UINT8;
             case IFORMAT_BAYER_GRBG_UINT8:

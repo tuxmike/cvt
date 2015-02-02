@@ -272,6 +272,8 @@ namespace cvt {
             virtual void Conv_YUV420u8_to_RGBAu8( uint8_t* dst, const uint8_t* srcy, const uint8_t* srcu, const uint8_t* srcv, const size_t n ) const;
             virtual void Conv_YUV420u8_to_BGRAu8( uint8_t* dst, const uint8_t* srcy, const uint8_t* srcu, const uint8_t* srcv, const size_t n ) const;
 
+            virtual void Conv_RGBAu8_to_HSVAu8( uint32_t* dst, const uint32_t* src, const size_t n ) const;
+
 
             virtual void Decompose_4f( float* dst1, float* dst2, float* dst3, float* dst4, const float* src, size_t n ) const;
             virtual void Decompose_4f_to_3f( float* dst1, float* dst2, float* dst3, const float* src, size_t n ) const;

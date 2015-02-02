@@ -28,7 +28,7 @@
 
 namespace cvt {
 
-#define LAST_FORMAT	( IFORMAT_UYVY_UINT8 )
+#define LAST_FORMAT	( IFORMAT_HSVA_UINT8 )
 
 #define TABLE( table, source, dst ) table[ ( ( source ) - 1 ) * LAST_FORMAT + ( dst ) - 1 ]
 
@@ -368,6 +368,19 @@ namespace cvt {
         CONV( Conv_RGBAf_to_GRAYf, dstImage, float*, sourceImage, float*, sourceImage.width() )
     }
 
+    static void Conv_RGBAu8_to_HSVAu8( Image & dstImage, const Image & sourceImage, IConvertFlags )
+    {
+        SIMD* simd = SIMD::instance();
+        const uint8_t* src;
+        const uint8_t* sbase;
+        size_t sstride;
+        size_t dstride;
+        uint8_t* dst;
+        uint8_t* dbase;
+        size_t h;
+
+        CONV( Conv_RGBAu8_to_HSVAu8, dstImage, uint32_t*, sourceImage, uint32_t*, sourceImage.width() )
+    }
 
     static void Conv_YUYVu8_to_RGBAu8( Image & dstImage, const Image & sourceImage, IConvertFlags )
     {
@@ -957,6 +970,7 @@ namespace cvt {
         TABLE( _convertFuncs, IFORMAT_RGBA_UINT8, IFORMAT_RGBA_FLOAT ) = &Conv_XXXAu8_to_XXXAf;
         TABLE( _convertFuncs, IFORMAT_RGBA_UINT8, IFORMAT_BGRA_UINT8 ) = &Conv_XYZAu8_to_ZYXAu8;
         TABLE( _convertFuncs, IFORMAT_RGBA_UINT8, IFORMAT_BGRA_FLOAT ) = &Conv_XYZAu8_to_ZYXAf;
+        TABLE( _convertFuncs, IFORMAT_RGBA_UINT8, IFORMAT_HSVA_UINT8 ) = &Conv_RGBAu8_to_HSVAu8;
 
         /* RGBA_UINT16 TO X */
         TABLE( _convertFuncs, IFORMAT_RGBA_UINT16, IFORMAT_RGBA_FLOAT ) = &Conv_u16_to_f;

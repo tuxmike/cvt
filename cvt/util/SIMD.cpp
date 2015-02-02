@@ -2763,6 +2763,64 @@ namespace cvt {
         }
     }
 
+    void SIMD::Conv_RGBAu8_to_HSVAu8( uint32_t* dst, const uint32_t * _src, const size_t n ) const
+    {
+        size_t i = n;
+        uint32_t* src = ( uint32_t* ) _src;
+        uint32_t tmp, out;
+
+        uint8_t r, g, b;
+        uint8_t h, s, v;
+        uint8_t min, max, maxtomin;
+
+        while( i-- ) {
+            tmp = *src++;
+            r = tmp & 0xff;
+            g = ( tmp >> 8 ) & 0xff;
+            b = ( tmp >>16 ) & 0xff;
+            out = tmp & 0xff000000;
+
+            min = r < g ? r : g;
+            min = min < b ? min : b;
+
+            max = r > g ? r : g;
+            v = max > b ? max : b;
+
+            if (v == 0) {
+                //h = s = 0;
+                *dst++ = out;
+                continue;
+            }
+
+            maxtomin = v - min;
+
+            s = 255 * maxtomin / v;
+            if (s == 0) {
+                //h = 0;
+                out |= v << 16;
+                *dst++ = out;
+                continue;
+            }
+
+            // hue
+            if (v == r) {
+                h = 0 + 43 * ( g - b) / maxtomin;
+            } else if (v == g) {
+                h = 85 + 43 * ( b - r) / maxtomin;
+            } else { // v == b
+                h = 171 + 43 *( r - g) / maxtomin;
+            }
+
+            h *= 0.7f; // h: 0-180
+
+            out |= v << 16;
+            out |= s << 8;
+            out |= h;
+            *dst++ = out;
+
+        }
+    }
+
     void SIMD::Decompose_4f( float* dst1, float* dst2, float* dst3, float* dst4, const float* src, size_t n ) const
     {
         while( n-- ) {
