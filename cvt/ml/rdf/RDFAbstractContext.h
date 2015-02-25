@@ -22,20 +22,41 @@
    THE SOFTWARE.
 */
 
-#ifndef CVT_RDFTEST_H
-#define CVT_RDFTEST_H
+#ifndef CVT_RDFABSTRACTRDFCONTEXT_H
+#define CVT_RDFABSTRACTRDFCONTEXT_H
+
+#include <vector>
+#include <io/xml/XMLSerializable.h>
+#include <math/RandomGenerator.h>
+#include <ml/rdf/RDFAbstractFeature.h>
+#include <ml/rdf/RDFAbstractStatistics.h>
+#include <ml/rdf/RDFDataPoint.h>
 
 namespace cvt {
 
-	template<typename DATA>
-	class RDFTest
+	/**
+	 * Define Types for a RDF Setup
+	 */
+	class RDFAbstractContext
 	{
-		public:
-			RDFTest() {}
-			virtual ~RDFTest() {}
+	   public:
 
-			virtual bool operator()( const DATA& d ) = 0;
+		/*
+		 * Shadow in individual Context
+		 */
+		typedef std::vector< float >                  InputType;
+		typedef size_t                                OutputType;
+		typedef RDFDataPoint < InputType, OutputType >   DataType;
+
+		typedef RDFAbstractFeature< DataType >       	  FeatureType;
+		typedef FeatureType::FeatureSampler 		  FeatureSamplerType;
+		//typedef RDFAbstractStatistics< DataType >      StatisticsType;
+
+	   private:
+		// no instances
+		RDFAbstractContext();
 	};
+
 }
 
 #endif

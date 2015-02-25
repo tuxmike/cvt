@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="Forest" type="ForestType"/>
+  
+  <xs:complexType name="ForestType">
+    <xs:sequence>
+      <xs:element type="TreeType" name="Tree" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="TreeType">
+    <xs:sequence>
+      <xs:element type="NodeType" name="Node" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute type="xs:integer" name="maxdepth" use="required"/>
+  </xs:complexType>
+  
+  <xs:complexType name="NodeType">
+  	  <xs:choice>
+  	  	<xs:sequence >
+		  <xs:element ref="Feature" minOccurs="1" maxOccurs="1" />
+	      <xs:element type="NodeType" name="Node" minOccurs="2" maxOccurs="2" />
+	    </xs:sequence>
+	      <xs:element ref="Statistics" minOccurs="1" maxOccurs="1" />
+	  </xs:choice>
+  </xs:complexType>
+  
+  <xs:element name="Feature" abstract="true" />
+  <xs:element name="Statistics" abstract="true" />
+  
+  <xs:complexType name="FeatureType" />
+  <xs:complexType name="StatisticsType" />
+
+  
+  <!-- predefined histogram -->
+  <xs:element name="Histogram" substitutionGroup="Statistics" type="HistogramType"/>
+  
+  <xs:complexType name="HistogramType">
+  	<xs:complexContent>
+	  	<xs:extension base="StatisticsType">
+	  	  <xs:sequence>
+            <xs:element name="histogram" type="hist_vec" minOccurs="1" maxOccurs="1" />
+          </xs:sequence>
+		  <xs:attribute type="xs:integer" name="n" use="required"/>
+		  <xs:attribute type="xs:float" name="entropy" use="required"/>
+	  	</xs:extension>
+  	</xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="hist_vec">
+	  <xs:sequence >
+	     <xs:element name="class" minOccurs="1" maxOccurs="unbounded">
+	       <xs:complexType>
+	         <xs:attribute type="xs:integer" name="index" use="required"/>
+	         <xs:attribute type="xs:integer" name="count" use="required"/>
+	       </xs:complexType>
+	     </xs:element>
+	  </xs:sequence>
+	  <xs:attribute type="xs:integer" name="size" use="required"/>
+  </xs:complexType>
+
+</xs:schema> 

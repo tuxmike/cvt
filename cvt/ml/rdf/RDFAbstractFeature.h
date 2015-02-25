@@ -22,53 +22,51 @@
    THE SOFTWARE.
 */
 
-#ifndef CVT_RDFCLASSIFICATIONTREE_H
-#define CVT_RDFCLASSIFICATIONTREE_H
+#ifndef CVT_RDFABSTRACTFEATURE_H
+#define CVT_RDFABSTRACTFEATURE_H
 
-#include <cvt/ml/rdf/RDFNode.h>
-#include <cvt/ml/rdf/RDFClassHistogram.h>
+#include <vector>
+#include <io/xml/XMLSerializable.h>
+#include <math/RandomGenerator.h>
 
 namespace cvt {
-	template<typename DATA, size_t N>
-	class RDFClassificationTree
+
+	/**
+	 * @brief Abstract Feature
+	 */
+	template< typename DataT >
+	class RDFAbstractFeature : public cvt::XMLSerializable
 	{
-		public:
-			RDFClassificationTree( RDFNode<DATA,RDFClassHistogram<N> >* root );
-			~RDFClassificationTree();
 
-			const RDFClassHistogram<N>& classify( const DATA& d );
-		private:
-			RDFClassificationTree( const RDFClassificationTree<DATA,N>& );
+	  public:
 
-			RDFNode<DATA,RDFClassHistogram<N> >* _root;
+		class FeatureSampler
+		{
+
+		  public:
+
+			/**
+			 * @brief Create Features
+			 * @param number of Features
+			 * @return features
+			 */
+			virtual void sample( std::vector< RDFAbstractFeature >& features, size_t numFeatures ) =0;
+
+			virtual ~FeatureSampler() {};
+
+		};
+
+		typedef DataT DataType;
+
+		/**
+		 * @brief Feature Test Function
+		 *
+		 * @param input vectors
+		 * @return bool
+		 */
+		virtual bool operator()( const typename DataType::InputType& input ) const =0;
 	};
 
-
-	template<typename DATA, size_t N>
-	inline RDFClassificationTree<DATA,N>::RDFClassificationTree( RDFNode<DATA,RDFClassHistogram<N> >* root ) : _root( root )
-	{
-	}
-
-	template<typename DATA, size_t N>
-	inline RDFClassificationTree<DATA,N>::~RDFClassificationTree( )
-	{
-	}
-
-
-	template<typename DATA, size_t N>
-	inline const RDFClassHistogram<N>& RDFClassificationTree<DATA,N>::classify( const DATA& d )
-	{
-		RDFNode<DATA,RDFClassHistogram<N> >* node = _root;
-		while( !node->isLeaf() ) {
-			if( node->test( d ) )
-				node = node->right();
-			else
-				node = node->left();
-		}
-		return *node->data();
-	}
-
 }
-
 
 #endif

@@ -406,6 +406,7 @@ SET( CVT_HEADERS
    math/graph/GraphNode.h
    math/graph/GraphEdge.h
    math/graph/GraphVisitor.h
+   math/RandomGenerator.h
    math/SparseBlockMatrix.h
    util/CPU.h
    util/CVTAssert.h
@@ -446,6 +447,16 @@ SET( CVT_HEADERS
    util/PluginManager.h
    util/PluginFile.h
    util/internal/ParamTypes.def
+   ml/rdf/RDFAbstractFeature.h
+   ml/rdf/RDFAbstractContext.h
+   ml/rdf/RDFAbstractStatistics.h
+   ml/rdf/RDFDataPoint.h
+   ml/rdf/RDFForest.h
+   ml/rdf/RDFHistogram.h
+   ml/rdf/RDFPath.h
+   ml/rdf/RDFTrainingParameters.h
+   ml/rdf/RDFTree.h
+   ml/rdf/RDFTreeTrainer.h
    vision/BoardDetector.h
    vision/CameraCalibration.h
    vision/ESM.h
@@ -690,6 +701,10 @@ SET( CVT_SOURCES
 	util/String.cpp
 	util/PluginManager.cpp
 	util/PluginFile.cpp
+    ml/rdf/RDFForest.cpp
+	ml/rdf/RDFHistogram.cpp
+	ml/rdf/RDFTree.cpp
+    ml/rdf/RDFTreeTrainer.cpp
 	vision/BoardDetector.cpp
 	vision/CameraCalibrationTest.cpp
 	vision/EPnP.cpp
