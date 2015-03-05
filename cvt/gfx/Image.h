@@ -51,7 +51,6 @@ namespace cvt {
 	{
 		friend std::ostream& operator<<(std::ostream &os, const Image &f);
 		friend class CLKernel;
-		// FIXME: provide method to access allocator
 		friend class GLDrawImageProg;
 		friend class GLTexMLSProg;
 
@@ -81,6 +80,7 @@ namespace cvt {
 			const IFormat & format() const;
 			IAllocatorType memType() const { return _mem->type(); }
 			uint8_t* map( size_t* stride ) { return _mem->map( stride ); }
+			ImageAllocator* allocator() { return _mem; }
 			const uint8_t * map( size_t* stride ) const { return ( const uint8_t* ) _mem->map( stride ); }
 			template<typename _T> _T* map( size_t* stride );
 			template<typename _T> const _T* map( size_t* stride ) const;

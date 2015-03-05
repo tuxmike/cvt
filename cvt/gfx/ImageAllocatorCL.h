@@ -40,6 +40,7 @@ namespace cvt {
 			virtual const uint8_t* map( size_t* stride ) const;
 			virtual void unmap( const uint8_t* ptr ) const;
 			virtual IAllocatorType type() const { return IALLOCATOR_CL; };
+			CLImage2D* clImage() { return _climage; };
 
 		private:
 			ImageAllocatorCL( const ImageAllocatorCL& );
