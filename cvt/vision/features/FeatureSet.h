@@ -47,6 +47,7 @@ namespace cvt {
 			Feature&		operator[]( size_t i );
 			const Feature&	operator[]( size_t i ) const;
 			FeatureSet&		operator= (const FeatureSet& other);
+			FeatureSet&     operator+= (const FeatureSet& other);
 
 			void			toPointSet2f( PointSet2f& ptset ) const;
 			void			setFeatures( const Feature* f, size_t n );
@@ -192,6 +193,12 @@ namespace cvt {
         _features.assign( other.begin(), other.end() );
         return *this;
 	}
+
+    inline FeatureSet& FeatureSet::operator+= ( const FeatureSet& other )
+    {
+        _features.insert( _features.begin(), other.begin(), other.end() );
+        return *this;
+    }
 
 	inline void FeatureSet::toPointSet2f( PointSet2f& ptset ) const
 	{

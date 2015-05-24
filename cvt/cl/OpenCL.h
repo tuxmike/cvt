@@ -56,10 +56,10 @@ namespace cvt {
 			static CLDevice* defaultDevice() { return _device; }
 			static bool	defaultGLsharing() { return _glsharing; }
 			static bool setDefaultDevice( const CLDevice& dev );
-		private:
+
 			static bool init( const GLContext* glctx );
 			static void cleanup();
-
+        private:
 			// default context, device and queue
 			static bool			   _glsharing;
 			static CLContext*	   _ctx;
